@@ -587,11 +587,9 @@ class RDBStorage(BaseStorage):
             for system_attr in id_to_system_attrs[trial_id]:
                 system_attrs[system_attr.key] = json.loads(system_attr.value_json)
 
-            # `-1` is a dummy value.
-            # It will be replaced by a proper value before returned to the caller.
-            #
+            # set trial number from system attributes
             # TODO(ohta): Use trial.number after TrialModel.number is added.
-            trial_number = -1
+            trial_number = system_attrs.get('_number')
 
             temp_trials.append(
                 structs.FrozenTrial(
@@ -616,8 +614,11 @@ class RDBStorage(BaseStorage):
             # This is because `self.get_trial_number_from_id()` may call `session.commit()`
             # internally, which causes unintended changes of the states of `trials`.
             # (see https://github.com/pfnet/optuna/pull/349#issuecomment-475086642 for details)
-            trial_number = self.get_trial_number_from_id(temp_trial.trial_id)
-            result.append(temp_trial._replace(number=trial_number))
+            if temp_trial.number is None:
+                trial_number = self.get_trial_number_from_id(temp_trial.trial_id)
+                result.append(temp_trial._replace(number=trial_number))
+            else:
+                result.append(temp_trial)
 
         return result
 
