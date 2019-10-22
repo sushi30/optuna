@@ -13,6 +13,9 @@ Integration
     :members:
     :exclude-members: infer_relative_search_space, sample_relative, sample_independent
 
+.. autoclass:: IgnitePruningHandler
+    :members:
+
 .. autoclass:: KerasPruningCallback
     :members:
 
@@ -22,6 +25,9 @@ Integration
 .. autoclass:: MXNetPruningCallback
     :members:
 
+.. autoclass:: PyTorchLightningPruningCallback
+    :members:
+
 .. autoclass:: SkoptSampler
     :members:
     :exclude-members: infer_relative_search_space, sample_relative, sample_independent
@@ -29,5 +35,11 @@ Integration
 .. autoclass:: TensorFlowPruningHook
     :members:
 
+.. autoclass:: TFKerasPruningCallback
+    :members:
+
 .. autoclass:: XGBoostPruningCallback
+    :members:
+
+.. autoclass:: OptunaSearchCV
     :members:
