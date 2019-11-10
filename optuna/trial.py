@@ -110,9 +110,10 @@ class Trial(BaseTrial):
     This object is passed to an objective function and provides interfaces to get parameter
     suggestion, manage the trial's state, and set/get user-defined attributes of the trial.
 
-    Note that this object is seamlessly instantiated and passed to the objective function behind
-    :func:`optuna.study.Study.optimize()` method (as well as optimize function); hence, in typical
-    use cases, library users do not care about instantiation of this object.
+    Note that the direct use of this constructor is not recommended.
+    This object is seamlessly instantiated and passed to the objective function behind
+    the :func:`optuna.study.Study.optimize()` method; hence library users do not care about
+    instantiation of this object.
 
     Args:
         study:
@@ -374,6 +375,14 @@ class Trial(BaseTrial):
             step:
                 Step of the trial (e.g., Epoch of neural network training).
         """
+
+        try:
+            # For convenience, we allow users to report a value that can be cast to `float`.
+            value = float(value)
+        except (TypeError, ValueError):
+            message = 'The `value` argument is of type \'{}\' but supposed to be a float.'.format(
+                type(value).__name__)
+            raise TypeError(message)
 
         self.storage.set_trial_value(self._trial_id, value)
         if step is not None:
