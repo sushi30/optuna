@@ -7,6 +7,7 @@ import multiprocessing.pool
 
 try:
     import pandas as pd  # NOQA
+
     _pandas_available = True
 except ImportError as e:
     _pandas_import_error = e
@@ -109,6 +110,10 @@ class BaseStudy(object):
         """
 
         return self._storage.get_all_trials(self.study_id)
+
+    def trial(self, number):
+        trial_id = self._storage.get_trial_id_from_number(self.study_id, number)
+        return self._storage.get_trial(trial_id)
 
     @property
     def storage(self):
@@ -252,7 +257,7 @@ class Study(BaseStudy):
             raise RuntimeError("Nested invocation of `Study.optimize` method isn't allowed.")
         if not isinstance(catch, tuple):
             raise TypeError("The catch argument is of type \'{}\' but must be a tuple.".format(
-                type(catch).__name__))
+                    type(catch).__name__))
 
         try:
             if n_jobs == 1:
@@ -383,17 +388,17 @@ class Study(BaseStudy):
             datetime_complete = datetime_complete or datetime.datetime.now()
 
         trial = structs.FrozenTrial(
-            number=-1,  # dummy value.
-            trial_id=-1,  # dummy value.
-            state=state,
-            value=value,
-            datetime_start=datetime_start,
-            datetime_complete=datetime_complete,
-            params=params,
-            distributions=distributions,
-            user_attrs=user_attrs,
-            system_attrs=system_attrs,
-            intermediate_values=intermediate_values)
+                number=-1,  # dummy value.
+                trial_id=-1,  # dummy value.
+                state=state,
+                value=value,
+                datetime_start=datetime_start,
+                datetime_complete=datetime_complete,
+                params=params,
+                distributions=distributions,
+                user_attrs=user_attrs,
+                system_attrs=system_attrs,
+                intermediate_values=intermediate_values)
 
         trial._validate()
 
@@ -528,7 +533,7 @@ class Study(BaseStudy):
             self._storage.set_trial_state(trial_id, structs.TrialState.PRUNED)
             return trial
         except Exception as e:
-            message = 'Setting status of trial#{} as {} because of the following error: {}'\
+            message = 'Setting status of trial#{} as {} because of the following error: {}' \
                 .format(trial_number, structs.TrialState.FAIL, repr(e))
             self.logger.warning(message, exc_info=True)
             self._storage.set_trial_system_attr(trial_id, 'fail_reason', message)
@@ -578,7 +583,7 @@ class Study(BaseStudy):
 
         self.logger.info('Finished trial#{} resulted in value: {}. '
                          'Current best value is {} with parameters: {}.'.format(
-                             trial_number, value, self.best_value, self.best_params))
+                trial_number, value, self.best_value, self.best_params))
 
 
 def create_study(
@@ -637,10 +642,10 @@ def create_study(
 
     study_name = storage.get_study_name_from_id(study_id)
     study = Study(
-        study_name=study_name,
-        storage=storage,
-        sampler=sampler,
-        pruner=pruner)
+            study_name=study_name,
+            storage=storage,
+            sampler=sampler,
+            pruner=pruner)
 
     if direction == 'minimize':
         _direction = structs.StudyDirection.MINIMIZE
@@ -730,7 +735,7 @@ def _check_pandas_availability():
 
     if not _pandas_available:
         raise ImportError(
-            'pandas is not available. Please install pandas to use this feature. '
-            'pandas can be installed by executing `$ pip install pandas`. '
-            'For further information, please refer to the installation guide of pandas. '
-            '(The actual import error is as follows: ' + str(_pandas_import_error) + ')')
+                'pandas is not available. Please install pandas to use this feature. '
+                'pandas can be installed by executing `$ pip install pandas`. '
+                'For further information, please refer to the installation guide of pandas. '
+                '(The actual import error is as follows: ' + str(_pandas_import_error) + ')')

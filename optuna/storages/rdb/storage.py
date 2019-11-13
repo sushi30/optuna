@@ -606,6 +606,18 @@ class RDBStorage(BaseStorage):
             return self._create_new_trial_number(trial_id)
         return trial_number
 
+    def get_trial_id_from_number(self, study_id, trial_number):
+        # type: (int, int) -> int
+
+        session = self.scoped_session()
+        trial = session.query(models.TrialSystemAttributeModel).join(models.TrialModel).filter(
+                TrialSystemAttributeModel.key == "_number",
+                TrialSystemAttributeModel.value_json == trial_number,
+                TrialModel.study_id == study_id
+        )
+        session.close()
+        return trial.trial_id
+
     def get_trial(self, trial_id):
         # type: (int) -> structs.FrozenTrial
 
