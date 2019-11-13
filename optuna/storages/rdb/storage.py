@@ -611,12 +611,12 @@ class RDBStorage(BaseStorage):
 
         session = self.scoped_session()
         trial = session.query(models.TrialSystemAttributeModel).join(models.TrialModel).filter(
-                TrialSystemAttributeModel.key == "_number",
-                TrialSystemAttributeModel.value_json == trial_number,
-                TrialModel.study_id == study_id
+                models.TrialSystemAttributeModel.key == "_number",
+                models.TrialSystemAttributeModel.value_json == trial_number,
+                models.TrialModel.study_id == study_id
         )
         session.close()
-        return trial.trial_id
+        return trial[0].trial_id
 
     def get_trial(self, trial_id):
         # type: (int) -> structs.FrozenTrial
