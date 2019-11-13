@@ -128,6 +128,12 @@ class BaseStorage(object):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def get_trial_id_from_number(self, study_id, trial_number):
+        # type: (int, int) -> int
+
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def get_trial_param(self, trial_id, param_name):
         # type: (int, str) -> float
 
