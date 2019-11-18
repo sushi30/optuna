@@ -159,12 +159,13 @@ class Study(BaseStudy):
             study_name,  # type: str
             storage,  # type: Union[str, storages.BaseStorage]
             sampler=None,  # type: samplers.BaseSampler
-            pruner=None  # type: pruners.BasePruner
+            pruner=None,  # type: pruners.BasePruner
+            storage_kwargs=None
     ):
         # type: (...) -> None
 
         self.study_name = study_name
-        storage = storages.get_storage(storage)
+        storage = storages.get_storage(storage, storage_kwargs)
         study_id = storage.get_study_id_from_name(study_name)
         super(Study, self).__init__(study_id, storage)
 
