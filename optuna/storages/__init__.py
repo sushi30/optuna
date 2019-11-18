@@ -5,12 +5,12 @@ from optuna.storages.rdb.storage import RDBStorage  # NOQA
 from typing import Union  # NOQA
 
 
-def get_storage(storage):
+def get_storage(storage, storage_kwargs=None):
     # type: (Union[None, str, BaseStorage]) -> BaseStorage
 
     if storage is None:
         return InMemoryStorage()
     if isinstance(storage, str):
-        return RDBStorage(storage)
+        return RDBStorage(storage, storage_kwargs)
     else:
         return storage
