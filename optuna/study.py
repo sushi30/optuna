@@ -695,6 +695,7 @@ def load_study(
         storage,  # type: Union[str, storages.BaseStorage]
         sampler=None,  # type: samplers.BaseSampler
         pruner=None,  # type: pruners.BasePruner
+        storage_kwargs=None
 ):
     # type: (...) -> Study
     """Load the existing :class:`~optuna.study.Study` that has the specified name.
@@ -713,10 +714,12 @@ def load_study(
             A pruner object that decides early stopping of unpromising trials.
             If :obj:`None` is specified, :class:`~optuna.pruners.MedianPruner` is used
             as the default. See also :class:`~optuna.pruners`.
+        storage_kwargs:
+            Other kwargs that should be passed to the storage constructor
 
     """
 
-    return Study(study_name=study_name, storage=storage, sampler=sampler, pruner=pruner)
+    return Study(study_name=study_name, storage=storage, sampler=sampler, pruner=pruner, storage_kwargs=storage_kwargs)
 
 
 def delete_study(

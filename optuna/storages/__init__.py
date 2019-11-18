@@ -11,6 +11,6 @@ def get_storage(storage, storage_kwargs=None):
     if storage is None:
         return InMemoryStorage()
     if isinstance(storage, str):
-        return RDBStorage(storage, storage_kwargs)
+        return RDBStorage(storage, engine_kwargs=storage_kwargs)
     else:
         return storage
