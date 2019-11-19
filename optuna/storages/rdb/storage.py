@@ -806,10 +806,11 @@ class RDBStorage(BaseStorage):
             # This is because `self.get_trial_number_from_id()` may call `session.commit()`
             # internally, which causes unintended changes of the states of `trials`.
             # (see https://github.com/optuna/optuna/pull/349#issuecomment-475086642 for details)
-            trial_number = self.get_trial_number_from_id(temp_trial._trial_id)
-            temp_trial.number = trial_number
-            result.append(temp_trial)
 
+            if temp_trial.number is None:
+                trial_number = self.get_trial_number_from_id(temp_trial._trial_id)
+                temp_trial.number = trial_number
+            result.append(temp_trial)
         return result
 
     @staticmethod
