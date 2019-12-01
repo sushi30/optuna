@@ -14,7 +14,7 @@ except ImportError as e:
     # trials_dataframe is disabled because pandas is not available.
     _pandas_available = False
 
-from six.moves import queue
+import queue
 import threading
 import time
 import warnings
@@ -49,7 +49,7 @@ class BaseStudy(object):
     def __init__(self, study_id, storage):
         # type: (int, storages.BaseStorage) -> None
 
-        self.study_id = study_id
+        self._study_id = study_id
         self._storage = storage
 
     @property
@@ -86,7 +86,7 @@ class BaseStudy(object):
             A :class:`~optuna.structs.FrozenTrial` object of the best trial.
         """
 
-        return self._storage.get_best_trial(self.study_id)
+        return self._storage.get_best_trial(self._study_id)
 
     @property
     def direction(self):
@@ -97,7 +97,7 @@ class BaseStudy(object):
             A :class:`~optuna.structs.StudyDirection` object.
         """
 
-        return self._storage.get_study_direction(self.study_id)
+        return self._storage.get_study_direction(self._study_id)
 
     @property
     def trials(self):
@@ -110,7 +110,7 @@ class BaseStudy(object):
             A list of :class:`~optuna.structs.FrozenTrial` objects.
         """
 
-        return self._storage.get_all_trials(self.study_id)
+        return self._storage.get_all_trials(self._study_id)
 
     def trial(self, number):
         trial_id = self._storage.get_trial_id_from_number(self.study_id, number)
@@ -193,6 +193,26 @@ class Study(BaseStudy):
         self._optimize_lock = threading.Lock()
 
     @property
+    def study_id(self):
+        # type: () -> int
+        """Return the study ID.
+
+        .. deprecated:: 0.20.0
+            The direct use of this attribute is deprecated and it is recommended that you use
+            :attr:`~optuna.study.Study.study_name` instead.
+
+        Returns:
+            The study ID.
+        """
+
+        message = 'The use of `Study.study_id` is deprecated. ' \
+                  'Please use `Study.study_name` instead.'
+        warnings.warn(message, DeprecationWarning)
+        self.logger.warning(message)
+
+        return self._study_id
+
+    @property
     def user_attrs(self):
         # type: () -> Dict[str, Any]
         """Return user attributes.
@@ -201,7 +221,7 @@ class Study(BaseStudy):
             A dictionary containing all user attributes.
         """
 
-        return self._storage.get_study_user_attrs(self.study_id)
+        return self._storage.get_study_user_attrs(self._study_id)
 
     @property
     def system_attrs(self):
@@ -212,7 +232,7 @@ class Study(BaseStudy):
             A dictionary containing all system attributes.
         """
 
-        return self._storage.get_study_system_attrs(self.study_id)
+        return self._storage.get_study_system_attrs(self._study_id)
 
     def optimize(
             self,
@@ -281,7 +301,7 @@ class Study(BaseStudy):
 
         """
 
-        self._storage.set_study_user_attr(self.study_id, key, value)
+        self._storage.set_study_user_attr(self._study_id, key, value)
 
     def set_system_attr(self, key, value):
         # type: (str, Any) -> None
@@ -296,7 +316,7 @@ class Study(BaseStudy):
 
         """
 
-        self._storage.set_study_system_attr(self.study_id, key, value)
+        self._storage.set_study_system_attr(self._study_id, key, value)
 
     def trials_dataframe(self, include_internal_fields=False):
         # type: (bool) -> pd.DataFrame
@@ -310,14 +330,22 @@ class Study(BaseStudy):
 
         Example:
 
-            Get an objective value and a value of parameter ``x`` in the first row.
+            .. testcode::
 
-            >>> df = study.trials_dataframe()
-            >>> df
-            >>> df.value[0]
-            0.0
-            >>> df.params.x[0]
-            1.0
+                import optuna
+                import pandas
+
+                def objective(trial):
+                    x = trial.suggest_uniform('x', -1, 1)
+                    return x ** 2
+
+                study = optuna.create_study()
+                study.optimize(objective, n_trials=3)
+
+                # Create a dataframe from the study.
+                df = study.trials_dataframe()
+                assert isinstance(df, pandas.DataFrame)
+                assert df.shape[0] == 3  # n_trials.
 
         Args:
             include_internal_fields:
@@ -420,7 +448,7 @@ class Study(BaseStudy):
 
         trial._validate()
 
-        self.storage.create_new_trial(self.study_id, template_trial=trial)
+        self._storage.create_new_trial(self._study_id, template_trial=trial)
 
     def _optimize_sequential(
             self,
@@ -537,7 +565,7 @@ class Study(BaseStudy):
     ):
         # type: (...) -> trial_module.Trial
 
-        trial_id = self._storage.create_new_trial(self.study_id)
+        trial_id = self._storage.create_new_trial(self._study_id)
         trial = trial_module.Trial(self, trial_id)
         trial_number = trial.number
 
