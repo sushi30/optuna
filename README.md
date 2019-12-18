@@ -2,11 +2,14 @@
 
 # Optuna: A hyperparameter optimization framework
 
+[![Python](https://img.shields.io/badge/python-3.5%20%7C%203.6%20%7C%203.7-blue)](https://www.python.org)
 [![pypi](https://img.shields.io/pypi/v/optuna.svg)](https://pypi.python.org/pypi/optuna)
+[![conda](https://img.shields.io/conda/vn/conda-forge/optuna.svg)](https://anaconda.org/conda-forge/optuna)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/optuna/optuna)
 [![CircleCI](https://circleci.com/gh/optuna/optuna.svg?style=svg)](https://circleci.com/gh/optuna/optuna)
 [![Read the Docs](https://readthedocs.org/projects/optuna/badge/?version=stable)](https://optuna.readthedocs.io/en/stable/)
 [![Codecov](https://codecov.io/gh/optuna/optuna/branch/master/graph/badge.svg)](https://codecov.io/gh/optuna/optuna/branch/master)
+[![Gitter chat](https://badges.gitter.im/optuna/gitter.svg)](https://gitter.im/optuna/optuna)
 
 [**Website**](https://optuna.org/)
 | [**Docs**](https://optuna.readthedocs.io/en/stable/)
@@ -87,6 +90,17 @@ $ conda install -c conda-forge optuna
 ```
 
 Optuna supports Python 3.5 or newer.
+
+
+## Communication
+
+- [Github Issues] for bug reports, feature requests and questions.
+- [Gitter] for interactive chat with developers.
+- [Stack Overflow] for questions.
+
+[GitHub issues]: https://github.com/optuna/optuna/issues
+[Gitter]: https://gitter.im/optuna/optuna
+[Stack Overflow]: https://stackoverflow.com/questions/tagged/optuna
 
 
 ## Contribution

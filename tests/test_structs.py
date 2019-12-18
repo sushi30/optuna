@@ -1,7 +1,8 @@
 import copy
 import datetime
-import pytest
 import warnings
+
+import pytest
 
 import optuna
 from optuna.distributions import LogUniformDistribution
@@ -188,6 +189,9 @@ def test_study_summary_eq_ne():
     assert len(summaries) == 2
 
     assert summaries[0] == copy.deepcopy(summaries[0])
+    assert not summaries[0] != copy.deepcopy(summaries[0])
+
+    assert not summaries[0] == summaries[1]
     assert summaries[0] != summaries[1]
 
     assert not summaries[0] == 1

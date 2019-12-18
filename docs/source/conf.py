@@ -45,6 +45,7 @@ release = __version__
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
@@ -91,6 +92,8 @@ if not on_rtd:
 # documentation.
 #
 # html_theme_options = {}
+
+html_favicon = '../image/favicon.ico'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -154,5 +157,7 @@ texinfo_documents = [
     (master_doc, 'Optuna', 'Optuna Documentation', author, 'Optuna',
      'One line description of project.', 'Miscellaneous'),
 ]
+
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
 
 # -- Extension configuration -------------------------------------------------

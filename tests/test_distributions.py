@@ -1,5 +1,6 @@
 import copy
 import json
+
 import pytest
 
 from optuna import distributions
@@ -176,16 +177,23 @@ def test_empty_distribution():
         distributions.UniformDistribution(low=0.0, high=-100.0)
 
     with pytest.raises(ValueError):
-        distributions.LogUniformDistribution(low=7.3, high=7.2),
+        distributions.LogUniformDistribution(low=7.3, high=7.2)
 
     with pytest.raises(ValueError):
-        distributions.DiscreteUniformDistribution(low=-30, high=-40, q=3),
+        distributions.DiscreteUniformDistribution(low=-30, high=-40, q=3)
 
     with pytest.raises(ValueError):
-        distributions.IntUniformDistribution(low=123, high=100),
+        distributions.IntUniformDistribution(low=123, high=100)
 
     with pytest.raises(ValueError):
-        distributions.CategoricalDistribution(choices=()),
+        distributions.CategoricalDistribution(choices=())
+
+
+def test_invalid_distribution():
+    # type: () -> None
+
+    with pytest.warns(UserWarning):
+        distributions.CategoricalDistribution(choices=({'foo': 'bar'},))  # type: ignore
 
 
 def test_eq_ne_hash():

@@ -10,6 +10,7 @@ This page contains a list of example codes written with Optuna.
 ### Examples with ML Libraries
 
 * [Scikit-learn](./sklearn_simple.py)
+* [Scikit-image](./skimage_lbp_simple.py)
 * [Chainer](./chainer_simple.py)
 * [ChainerMN](./chainermn_simple.py)
 * [Dask-ML](./dask_ml_simple.py)
@@ -53,6 +54,10 @@ In addition, integration modules are available for the following libraries, prov
 ### Examples of Visualization
 
 * [Visualizing study](https://nbviewer.jupyter.org/github/optuna/optuna/blob/master/examples/visualization/plot_study.ipynb)
+
+### Examples of MLflow
+
+* [Tracking optimization process with MLflow](./mlflow/keras_mlflow.py)
 
 ### Examples of Distributed Optimization
 

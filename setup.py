@@ -37,10 +37,13 @@ def get_install_requires():
         'cliff',
         'colorlog',
         'numpy',
-        'scipy',
+        # TODO(Yanase): Remove the version constraint when the CI error is solved by new versions.
+        # See https://github.com/optuna/optuna/issues/800 for further details.
+        'scipy<1.4.0',
         'sqlalchemy>=1.1.0',
         'tqdm',
         'typing',
+        'joblib',
     ]
 
 
@@ -53,7 +56,7 @@ def get_tests_require():
 def get_extras_require():
     # type: () -> Dict[str, List[str]]
 
-    return {
+    requirements = {
         'checking': [
             'autopep8',
             'hacking',
@@ -74,26 +77,29 @@ def get_extras_require():
         'example': [
             'catboost',
             'chainer',
+            'lightgbm',
+            'mlflow',
+            'mxnet',
+            'scikit-image',
+            'scikit-learn',
+            'xgboost',
+        ] + (['fastai<2'] if (3, 5) < sys.version_info[:2] < (3, 8) else [])
+        + ([
             'dask[dataframe]',
             'dask-ml',
             'keras',
-            'lightgbm',
-            'mxnet',
             'pytorch-ignite',
             'pytorch-lightning',
-            'scikit-learn',
             # TODO(Yanase): Update examples to support TensorFlow 2.0.
             # See https://github.com/optuna/optuna/issues/565 for further details.
             'tensorflow<2.0.0',
             'torch',
-            'torchvision',
-            'xgboost',
-        ] + (['fastai<2'] if sys.version_info[:2] > (3, 5) else []),
+            'torchvision'
+        ] if sys.version_info[:2] < (3, 8) else []),
         'testing': [
             'bokeh',
             'chainer>=5.0.0',
             'cma',
-            'keras',
             'lightgbm',
             'mock',
             'mpi4py',
@@ -101,17 +107,22 @@ def get_extras_require():
             'pandas',
             'plotly>=4.0.0',
             'pytest',
-            'pytorch-ignite',
-            'pytorch-lightning',
             'scikit-learn>=0.19.0',
             'scikit-optimize',
+            'xgboost',
+        ] + (['fastai<2'] if (3, 5) < sys.version_info[:2] < (3, 8) else [])
+        + ([
+            'keras',
+            'pytorch-ignite',
+            'pytorch-lightning',
             'tensorflow',
             'tensorflow-datasets',
             'torch',
-            'torchvision',
-            'xgboost',
-        ] + (['fastai<2'] if sys.version_info[:2] > (3, 5) else []),
+            'torchvision'
+        ] if sys.version_info[:2] < (3, 8) else []),
     }
+
+    return requirements
 
 
 def find_any_distribution(pkgs):
