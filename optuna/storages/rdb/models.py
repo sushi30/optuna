@@ -93,7 +93,7 @@ class StudyUserAttributeModel(BaseModel):
     study_user_attribute_id = Column(Integer, primary_key=True)
     study_id = Column(Integer, ForeignKey('studies.study_id'))
     key = Column(String(MAX_INDEXED_STRING_LENGTH))
-    value_json = Column(String(MAX_STRING_LENGTH))
+    value_json = Column(String())
 
     study = orm.relationship(
         StudyModel,
@@ -251,7 +251,7 @@ class TrialUserAttributeModel(BaseModel):
     trial_user_attribute_id = Column(Integer, primary_key=True)
     trial_id = Column(Integer, ForeignKey('trials.trial_id'))
     key = Column(String(MAX_INDEXED_STRING_LENGTH))
-    value_json = Column(String(MAX_STRING_LENGTH))
+    value_json = Column(String())
 
     trial = orm.relationship(
         TrialModel,
